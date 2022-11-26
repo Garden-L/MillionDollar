@@ -1,0 +1,19 @@
+{
+  "name": "milliondollar",
+  "version": "1.0.0",
+  "description": "백만불 사나이",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SOUTH-KOREAN/MillionDollars.git"
+  },
+  "author": "Jeong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SOUTH-KOREAN/MillionDollars/issues"
+  },
+  "homepage": "https://github.com/SOUTH-KOREAN/MillionDollars#readme"
+}
