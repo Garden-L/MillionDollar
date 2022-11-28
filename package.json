@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/SOUTH-KOREAN/MillionDollars/issues"
   },
-  "homepage": "https://github.com/SOUTH-KOREAN/MillionDollars#readme"
+  "homepage": "https://github.com/SOUTH-KOREAN/MillionDollars#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
+    "nunjucks": "^3.2.3",
+    "sequelize": "^6.25.8",
+    "sequelize-cli": "^6.5.2"
+  }
 }
