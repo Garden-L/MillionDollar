@@ -17,10 +17,17 @@ db.Corporation = Corporation;
 db.Investor = Investor;
 db.Marketprice = Marketprice;
 
-Corporation.init(sequelize);
+//Corporation.init(sequelize);
 Investor.init(sequelize);
 Marketprice.init(sequelize);
 
-sequelize.drop();
+sequelize.sync({alter: true})
+    .then(() => {
+        console.log('데이터 베이스 연결 성공');
+    })
+    .catch((err) => {
+        console.error(err);
+    });
+
 
 db.sequelize = sequelize;
