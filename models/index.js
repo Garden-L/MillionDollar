@@ -21,7 +21,9 @@ db.Marketprice = Marketprice;
 Investor.init(sequelize);
 Marketprice.init(sequelize);
 
-sequelize.sync({alter: true})
+
+
+sequelize.sync({force:false})
     .then(() => {
         console.log('데이터 베이스 연결 성공');
     })
@@ -29,5 +31,11 @@ sequelize.sync({alter: true})
         console.error(err);
     });
 
-
 db.sequelize = sequelize;
+
+// {
+//     foreignKey: "stk_code", // change column name
+//     onDelete: "RESTRICT", // ON DELETE config
+//     onUpdate: "RESTRICT", // ON UPDATE config
+//     constraints: false, // remove ON DELETE and ON UPDATE constraints
+//   }

@@ -3,13 +3,17 @@ const { Model, DataTypes } = require('sequelize');
 class Investor extends Model{
     static init(sequelize){
         super.init({
-            stock_code: {
+            stk_code: {
                 type: DataTypes.STRING(6),
+                primaryKey: true,
                 allowNull: false,
+                unique: true,
             },
-            trade_date: {
+            tr_date: {
                 type: DataTypes.DATEONLY,
+                primaryKey: true,
                 allowNull: false,
+                unique: true,
             },
             volume_finance_sell: {
                 type: DataTypes.BIGINT,
@@ -32,7 +36,7 @@ class Investor extends Model{
             volume_otherfund_sell: {
                 type: DataTypes.BIGINT,
             },
-            volume_othercorporation_sell: {
+            volume_othercor_sell: {
                 type: DataTypes.BIGINT,
             },
             volume_individual_sell: {
@@ -41,7 +45,7 @@ class Investor extends Model{
             volume_foreigner_sell: {
                 type: DataTypes.BIGINT,
             },
-            volume_0therforigner_sell: {
+            volume_otherforeigner_sell: {
                 type: DataTypes.BIGINT,
             },
 
@@ -67,7 +71,7 @@ class Investor extends Model{
             volume_otherfund_buy: {
                 type: DataTypes.BIGINT,
             },
-            volume_othercorporation_buy: {
+            volume_othercor_buy: {
                 type: DataTypes.BIGINT,
             },
             volume_individual_buy: {
@@ -76,7 +80,7 @@ class Investor extends Model{
             volume_foreigner_buy: {
                 type: DataTypes.BIGINT,
             },
-            volume_otherforigner_buy: {
+            volume_otherforeigner_buy: {
                 type: DataTypes.BIGINT,
             },
 
@@ -103,7 +107,7 @@ class Investor extends Model{
             volume_otherfund_net: {
                 type: DataTypes.BIGINT,
             },
-            volume_othercorporation_net: {
+            volume_othercor_net: {
                 type: DataTypes.BIGINT,
             },
             volume_individual_net: {
@@ -112,119 +116,119 @@ class Investor extends Model{
             volume_foreigner_net: {
                 type: DataTypes.BIGINT,
             },
-            volume_otherforigner_net: {
+            volume_otherforeigner_net: {
                 type: DataTypes.BIGINT,
             },
 
-            // tradevalue_name_sell
-            tradevalue_finance_sell: {
+            // value_name_sell
+            value_finance_sell: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_insurance_sell: {
+            value_insurance_sell: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_investortrust_sell: {
+            value_investortrust_sell: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_private_sell: {
+            value_private_sell: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_bank_sell: {
+            value_bank_sell: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_otherfinance_sell: {
+            value_otherfinance_sell: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_otherfund_sell: {
+            value_otherfund_sell: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_othercorporation_sell: {
+            value_othercor_sell: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_individual_sell: {
+            value_individual_sell: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_foreigner_sell: {
+            value_foreigner_sell: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_0therforigner_sell: {
-                type: DataTypes.BIGINT,
-            },
-
-            // tradevalue_name_buy
-            tradevalue_finance_buy: {
-                type: DataTypes.BIGINT,
-            },
-            tradevalue_insurance_buy: {
-                type: DataTypes.BIGINT,
-            },
-            tradevalue_investortrust_buy: {
-                type: DataTypes.BIGINT,
-            },
-            tradevalue_private_buy: {
-                type: DataTypes.BIGINT,
-            },
-            tradevalue_bank_buy: {
-                type: DataTypes.BIGINT,
-            },
-            tradevalue_otherfinance_buy: {
-                type: DataTypes.BIGINT,
-            },
-            tradevalue_otherfund_buy: {
-                type: DataTypes.BIGINT,
-            },
-            tradevalue_othercorporation_buy: {
-                type: DataTypes.BIGINT,
-            },
-            tradevalue_individual_buy: {
-                type: DataTypes.BIGINT,
-            },
-            tradevalue_foreigner_buy: {
-                type: DataTypes.BIGINT,
-            },
-            tradevalue_otherforigner_buy: {
+            value_otherforeigner_sell: {
                 type: DataTypes.BIGINT,
             },
 
+            // value_name_buy
+            value_finance_buy: {
+                type: DataTypes.BIGINT,
+            },
+            value_insurance_buy: {
+                type: DataTypes.BIGINT,
+            },
+            value_investortrust_buy: {
+                type: DataTypes.BIGINT,
+            },
+            value_private_buy: {
+                type: DataTypes.BIGINT,
+            },
+            value_bank_buy: {
+                type: DataTypes.BIGINT,
+            },
+            value_otherfinance_buy: {
+                type: DataTypes.BIGINT,
+            },
+            value_otherfund_buy: {
+                type: DataTypes.BIGINT,
+            },
+            value_othercor_buy: {
+                type: DataTypes.BIGINT,
+            },
+            value_individual_buy: {
+                type: DataTypes.BIGINT,
+            },
+            value_foreigner_buy: {
+                type: DataTypes.BIGINT,
+            },
+            value_otherforeigner_buy: {
+                type: DataTypes.BIGINT,
+            },
 
-            // tradevalue_name_net
-            tradevalue_finance_net: {
+
+            // value_name_net
+            value_finance_net: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_insurance_net: {
+            value_insurance_net: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_investortrust_net: {
+            value_investortrust_net: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_private_net: {
+            value_private_net: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_bank_net: {
+            value_bank_net: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_otherfinance_net: {
+            value_otherfinance_net: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_otherfund_net: {
+            value_otherfund_net: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_othercorporation_net: {
+            value_othercor_net: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_individual_net: {
+            value_individual_net: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_foreigner_net: {
+            value_foreigner_net: {
                 type: DataTypes.BIGINT,
             },
-            tradevalue_otherforigner_net: {
+            value_otherforeigner_net: {
                 type: DataTypes.BIGINT,
             },
         },
         {
             sequelize,
-            tableName: "Investor",
+            tableName: "Investors",
             timestamps: false,
         })
     }

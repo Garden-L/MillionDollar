@@ -268,6 +268,47 @@ def getTradingOfInvestors(stkCode, startDate, endDate):
 
     return investor_data
 
+def getTradingOfInvestorsPrefixsumPeriod(stkCode, date) -> pd.DataFrame:
+    krx_data = req.post(KRX_URL,
+                        data={
+                            'bld': 'dbms/MDC/STAT/standard/MDCSTAT02301',
+                            'isuCd': StkcodeToStdcode(stkCode),
+                            'strtDd': date,
+                            'endDd': date,
+                        })
+
+    krx_data = pd.DataFrame(krx_data.json()['output'])
+    krx_data = removeChar(krx_data, ',')
+
+    krx_data = krx_data.drop(labels=[12,7], axis=0)
+    
+    data = {}
+    tick={"금융투자":'FINANCE', '보험': 'INSURANCE', '투신':'INVESTORTRUST', '사모':'PRIVATE', '은행': 'BANK', '기타금융':'OTHERFINANCE', '연기금 등':'OTHERFUND', '기타법인':'OTHERCORPORATION', '개인':'INDIVIDUAL', '외국인':'FOREIGNER', '기타외국인':'OTHERFORIGNER'}
+    TRADE = ['VOLUME_', 'TRADEVALUE_']
+    BID = ['_SELL', '_BUY', '_NET']
+    for idx in range(0, len(krx_data.index)):
+        for trade in range(1, len(krx_data.iloc[idx])-1):
+            key = tick[krx_data.iloc[idx][0]]
+            if(1<= trade and trade <= 3):
+                key = TRADE[0] + key
+            else:
+                key = TRADE[1] + key
+            
+            if(trade == 1 or trade == 4):
+                key = key + BID[0]
+            elif (trade == 2 or trade == 5):
+                key = key + BID[1]
+            else:
+                key = key + BID[2]
+            
+            data[key] = [krx_data.iloc[idx][trade]]
+    krx_data = pd.DataFrame(data)
+    krx_data['STK_CODE'] = stkCode
+    krx_data['TRADE_DATE'] = date
+
+    return krx_data
+
+print(getTradingOfInvestorsPrefixsumPeriod("005930", "20221202"))
 
 def getNaverMarketPrice(stkCode: str, startDate: str, endDate: str) -> pd.DataFrame:
     '''
@@ -316,7 +357,6 @@ def getShares_flow_rate(stkCode: str) -> float:
     '''
     * function : 주식 유동비율
     '''
-
     fnguide_data = req.get("https://asp01.fnguide.com/SVO2/ASP/SVD_main.asp?pGB=1&gicode=A{stkCode}&cID=&MenuYn=Y&ReportGB=&NewMenuID=11&stkGb=&strResearchYN=",
                             headers=REQUEST_HEADERS,
     )
@@ -349,7 +389,7 @@ def getMarketPrice(stkCode: str, startDate:str, endDate:str) -> pd.DataFrame:
 
     
 #print(getMarketPrice('005930', '20220101', '20220202'))
-#print(getTradingOfInvestors("005930","20220603","20221203").to_csv("fwfew.csv"))
+print(getTradingOfInvestors_("024940","20221108","20221203",1,3).to_csv("fwfew.csv"))
 
 if __name__== '__main__':
-
+    pass
