@@ -37,6 +37,14 @@ class Type:
         'otherforeigner': np.int64, 
         'total'         : np.int64,          
         'tr_date'       : np.datetime64,     
+
+
+        'idx1'          : np.str_, 
+        'idx2'          : np.str_,
+        'codename'      : np.str_,
+        'mktcode'       : np.str_,
+        'mktname'       : np.str_,   
+        'tr_compprc'    : np.int32,
     }
 
     @staticmethod
@@ -50,6 +58,7 @@ class Type:
         
         return df.astype(dtype=types)
 
+    
 class naming:
     '''
     *** Naming rule ***
@@ -124,6 +133,16 @@ class naming:
         'TRDVAL11'      : 'otherforeigner',      #기타외국인
         'TRDVAL_TOT'    : 'total',              #전체
         'TRD_DD'        : 'tr_date',     
+
+        # index codes 
+        'full_code'     : 'idx1',
+        'short_code'    : 'idx2',
+        'codeName'      : 'codename',
+        'marketCode'    : 'mktcode',
+        'marketName'    : 'mktname',
+
+        'STR_CMP_PRC'   : 'tr_compprc',
+
     }
 
     @staticmethod

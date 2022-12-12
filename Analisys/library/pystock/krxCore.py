@@ -59,7 +59,7 @@ class KrxRequesFormData:
     def setBld(self, bld: str):
         return self.setFormData('bld', 'dbms/MDC/STAT/standard/' + bld)
 
-    def setMktId(self, mktid: str):
+    def setMktId(self, mktid: int):
         if (mktid == 3):  # KOSDAQ 전체
             self.setSegTpCd('ALL')
         if (mktid == 4):  # KOSDAQ GLOBAL
@@ -93,6 +93,9 @@ class KrxRequesFormData:
 
     def setMktsel(self, mktsel):
         return self.setFormData('mktsel', mktsel)
+    
+    def setMktTpCd(self, mkttpcd):
+        return self.setFormData('mktTpCd', mkttpcd)
 
     def setDetailView(self, view):
         return self.setFormData('detailView', view)
@@ -124,6 +127,16 @@ class KrxRequesFormData:
     def setCode(self, code):
         return self.setFormData('code', code)
     
+    def setMktsel(self, mktsel: int):
+        MKTSEL = [1, 1, 2, 3, 4,'T']
+
+        return self.setFormData('mktsel', MKTSEL[mktsel])
+
+    def setIndIdx(self, indIdx):
+        return self.setFormData('indIdx', indIdx)
+
+    def setIndIdx2(self, indIdx2):
+        return self.setFormData('indIdx2', indIdx2)
 
 
 
@@ -178,6 +191,20 @@ class krxAPI:
         response = krxRequest.post(formData=formData)
 
         return pd.DataFrame(response.json()['block1'])
+
+    @staticmethod
+    def getIndexCode(mktsel: int = 1) -> pd.DataFrame:
+        '''
+        * params : mktsel 1: 전체, 2: krx, 3:kospi, 4:kosdaq, 5:테마
+        '''
+
+        formData = KrxRequesFormData().setFormData('bld', 'dbms/comm/finder/finder_equidx')\
+                                    .setMktsel(mktsel)
+        
+        response = krxRequest.post(formData=formData)
+
+        return pd.DataFrame(response.json()['block1'])
+        
 
     @staticmethod
     def getTransactionOfIvestor_PeriodPrefixSum(stkCode: str, startDate: str, endDate: str) -> pd.DataFrame:
@@ -273,6 +300,65 @@ class krxAPI:
 
         return pd.DataFrame(response.json()['output'])
 
+    
+    #세부안내
+    @staticmethod
+    def getMDC0201020506(date: str, mktid: int='STK'):
+        '''
+        * function : 업종분류 현황
+        * params :  mktid:
+                    - KOSPI  : 2
+                    - KOSDAQ
+                        - 전체           : 3
+                        - KOSDAQ GLOBAL : 4
+        '''
+        formData = KrxRequesFormData().setBld('MDCSTAT03901')\
+                                    .setMktId(mktid)\
+                                    .setTrdDd(date)\
+                                    .setMoney('1')\
+                                    .setCsvxls_isNo('false')
+
+        response = krxRequest.post(formData=formData)                          
+
+        return pd.DataFrame(response.json()['block1'])
+
+    @staticmethod
+    def getMDC0201020501(mktTpCd: int = 0, isuSrtCd ='ALL'):
+        '''
+        * function : 상장회사 상세검색
+        * params : mktTpCd 1: 전체, 2 : 코스피, 3: 코스탁, 4: 코넥스
+        '''
+        formData = KrxRequesFormData().setBld('MDCSTAT03402')\
+                                    .setMktTpCd(mktTpCd)\
+                                    .setFormData('tboxisuSrtCd_finder_listisu0_2', "전체")\
+                                    .setFormData('isuSrtCd', isuSrtCd)\
+                                    .setFormData('isuSrtCd2', isuSrtCd)\
+                                    
+
+
+        response = krxRequest.post(formData=formData)          
+
+        return pd.DataFrame(response.json()['block1'])
+
+
+
+    ### 지수 ###
+    def getStocksInIndex(date: str, indIdx1: str, indIdx2: str) -> pd.DataFrame:
+        '''
+        * function : 지수 구성 종목
+        * params : getIndexCode() 참고
+        '''
+        formData = KrxRequesFormData().setBld('MDCSTAT00601')\
+                                    .setIndIdx(indIdx1)\
+                                    .setIndIdx2(indIdx2)\
+                                    .setTrdDd(date)
+        response = krxRequest.post(formData=formData)          
+
+        return pd.DataFrame(response.json()['output'])
+
 if __name__ =='__main__':
     #print(krxAPI.getKrxMarketPrice('005930', '20170101', '20200202', 1))
-    print(krxAPI.getHolidays('2022'))
+    #print(krxAPI.getHolidays('2022'))
+    #print(krxAPI.getMDC0201020506('20221212', 3))
+    #print(krxAPI.getIndexCode(1))
+    print(krxAPI.getStocksInIndex('20221212', '5', '042'))

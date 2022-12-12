@@ -142,10 +142,29 @@ class stockAPI:
 
         return invData
 
+
+    @staticmethod
+    def getIndexCodes():
+        codes = krxAPI.getIndexCode(1)
+
+        codes = naming.setColumnsNaming(codes)
+
+        return codes
+
+    @staticmethod
+    def getStocksInIndex(date: str, indIdx1: str, indIdx2: str) -> pd.DataFrame:
+        data = krxAPI.getStocksInIndex(date, indIdx1, indIdx2)
+
+        data = naming.setColumnsNaming(data)
+        data.drop(columns=['cpr_name', 'tr_clsprc', 'fluc_code', 'tr_compprc', 'fluc_rt', 'mkt_capital'], inplace=True)
+        return data
+    
+
 if __name__=='__main__':
     #print(stockAPI.getMarketPrice('060310', '20221209', '20221209'))
     #print(stockAPI.getTransactionOfInvestors('005930', '20180101', '20180505'))
-    print(stockAPI.getTransactionOfIvestor_PeriodPrefixSum('005930', '20180101', '20180505').to_csv('fewfw.csv'))
-
+    #print(stockAPI.getTransactionOfIvestor_PeriodPrefixSum('005930', '20180101', '20180505').to_csv('fewfw.csv'))
     #stockAPI.getHollydays(2022)
+    #print(stockAPI.getIndexCodes())
+    print(stockAPI.getStocksInIndex('20221212', '1', '001'))
     pass

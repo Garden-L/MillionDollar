@@ -8,7 +8,7 @@ class fnguideCore:
         '''
         * function : 주식 유동비율
         '''
-        fnguide_data = req.get("https://asp01.fnguide.com/SVO2/ASP/SVD_main.asp?pGB=1&gicode=A{stkCode}&cID=&MenuYn=Y&ReportGB=&NewMenuID=11&stkGb=&strResearchYN=",
+        fnguide_data = req.get(f"https://asp01.fnguide.com/SVO2/ASP/SVD_main.asp?pGB=1&gicode=A{stkCode}&cID=&MenuYn=Y&ReportGB=&NewMenuID=11&stkGb=&strResearchYN=",
                                 headers={
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8", }
         )
