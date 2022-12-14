@@ -3,43 +3,46 @@ const { Model, DataTypes } = require('sequelize');
 class Marketprice extends Model{
     static init(sequelize){
         super.init({
-            stock_code: {
+            stk_code: {
                 type: DataTypes.STRING(6),
-                unique: true,
-                allowNull: false,
+                primaryKey: true,
             },
-            market_date:{
+            tr_date:{
                 type: DataTypes.DATEONLY,
+                primaryKey: true,
             },
-            open_price: {
+            tr_opnprc: {
                 type: DataTypes.INTEGER,
             },
-            close_price: {
+            tr_hgprc: {
                 type: DataTypes.INTEGER,
             },
-            high_price: {
+            tr_lwprc: {
                 type: DataTypes.INTEGER,
             },
-            low_prive: {
+            tr_clsprc: {
                 type: DataTypes.INTEGER,
             },
-            volume: {
+            tr_volume: {
                 type: DataTypes.BIGINT,
             },
-            transaction_price: {
+            tr_value: {
                 type: DataTypes.BIGINT,
             },
-            total_shares: {
+            list_shares: {
                 type: DataTypes.BIGINT,
             },
-            flow_shares: {
+            mkt_capital: {
                 type: DataTypes.BIGINT,
+            },
+            flow_rate: {
+                type: DataTypes.FLOAT,
             }
         },
         {
             sequelize,
             timestamps: false,
-            freezeTableName: true,
+            tableName: 'marketprices',
         })
     }
 }

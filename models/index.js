@@ -17,10 +17,25 @@ db.Corporation = Corporation;
 db.Investor = Investor;
 db.Marketprice = Marketprice;
 
-Corporation.init(sequelize);
+//Corporation.init(sequelize);
 Investor.init(sequelize);
 Marketprice.init(sequelize);
 
-sequelize.drop();
+
+
+sequelize.sync({force:false})
+    .then(() => {
+        console.log('데이터 베이스 연결 성공');
+    })
+    .catch((err) => {
+        console.error(err);
+    });
 
 db.sequelize = sequelize;
+
+// {
+//     foreignKey: "stk_code", // change column name
+//     onDelete: "RESTRICT", // ON DELETE config
+//     onUpdate: "RESTRICT", // ON UPDATE config
+//     constraints: false, // remove ON DELETE and ON UPDATE constraints
+//   }
