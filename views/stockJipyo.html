@@ -1,0 +1,140 @@
+{% extends "./template/mainTemplate.html" %}
+
+{% block addHeader %}
+<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4-4.6.0/dt-1.13.1/datatables.min.css"/>
+ 
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4-4.6.0/dt-1.13.1/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.1.0/chart.umd.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+<script type="text/javascript" src="js/lib/reqData.js"></script>
+
+{% endblock %}
+
+{% block content%}
+<h1 class="h3 mb-2 text-gray-800">Prefix Sum Rate Of Each Investors</h1>
+
+<p class="mb-4">가장 최근 거래일 기준 투자자별 누적 순매수 비율입니다. IND: 개인, INS: 기관, COR: 법인, FOR: 외인<br>
+                ex) IND(30) S : 30일 개인 순매수 주식 총액   / 30일 평균 주식수 (30일 평균 주식 수 * 유동비율) (%)<br>
+                ex) IND(30) C : 30일 개인 순매수 거래대금총액 / 30일 평균 유동시총(30일 평균 시가총액 * 유동비율) (%)
+</p>
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <div class="row">
+
+            <h6 class="m-0 font-weight-bold text-primary align-self-center col-md-5">기관별 누적 순매수</h6>
+
+            
+            <h6 class="m-0 pr-4 text-right font-weight-bold text-primary align-self-center col-md-1">누적일</h6>
+            <select id="prefix_sum" name="job">
+                <option value="학생">5</option>
+                <option value="학생">10</option>
+                <option value="학생">20</option>
+                <option value="학생">30</option>
+                <option value="학생" selected>60</option>
+                <option value="학생">120</option>
+            </select>
+            <h6 class="m-0 pr-4 text-right font-weight-bold text-primary align-self-center col-md-1">기준일</h6>
+            <input input='text' id="datepicker" class="form-control mr-4 col-md-2"  value=""/>
+            <script>
+                $(function () {
+                    $('#datepicker').datepicker({
+                        dateFormat: "yy-mm-dd",
+                    });//datepicker end
+                    $('#datepicker').datepicker('setDate', 'today');
+                });//ready end
+                
+            </script>
+            <button class="col-md-1" onclick='prefixsumRequest()'>요청</button>
+        </div>
+    </div>
+
+<script>
+    async function prefixsumRequest(){
+        //table
+        isTable = document.getElementById('dataTable_wrapper');
+        if(isTable) isTable.remove();
+        date = document.getElementById('datepicker').value
+
+        if(!Date.parse(date)){
+            date = new Date();
+            date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+            console.log('fw');
+        }
+
+        //누적일
+        prefix_sumTag = document.getElementById('prefix_sum');
+        index = document.getElementById('prefix_sum').selectedIndex;
+        
+        data = await axios({
+            method:'post',
+            'url': '/api/stock',
+            data:{
+                date: date,
+                prefixSum : prefix_sumTag.options[index].innerText,
+            }
+        });
+
+        console.log(data.data);
+        if(data.data.length == 0) return;
+        space = document.getElementById('tableSpace');
+        table = to_Table(data.data);
+        space.appendChild(table);
+        
+        $('.request_column').on('click', async function(e){
+            //chart
+            if(document.getElementById('chart')){
+                document.getElementById('chart').remove();
+            }
+            data = await axios({
+                method: 'post',
+                url: '/api/chart',
+                data:{
+                    code: e.target.innerText,
+                }
+            });
+
+            tr = document.createElement('tr');
+            tr.setAttribute('id', 'chart');
+
+            td = document.createElement('td');
+            td.setAttribute('colspan', '10');
+            tr.appendChild(td);
+
+            e.target.parentNode.after(tr);
+            td.appendChild(to_Chart(data.data));
+        });
+
+        // 차트 onclick 속성 적용으로 인해 테이블을 마지막에 생성
+        $('#dataTable').DataTable({
+        searching:true,
+        });
+    }
+</script>
+    <div class="card-body">
+        <div class="table-responsive" id="indexSapce">
+            <script>
+                
+            </script>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive" id="tableSpace">
+            <script>
+                prefixsumRequest();
+            </script>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}
